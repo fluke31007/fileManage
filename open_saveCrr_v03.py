@@ -1,9 +1,10 @@
 import maya.cmds as mc
 import os
 import re
+import getpass
 class openFile(object):
     def __init__(self):
-        self.userP ="C:/users/Admins/Documents/yggintern/"
+        self.userP ="C:/users/"+getpass.getuser()+"/Documents/yggintern/"
         self.workN=""
         self.proJ=""        
         self.typeW=""
@@ -15,6 +16,7 @@ class openFile(object):
         self.blockVer=0
         self.polVer=0
         self.Version=0
+        self.anim =""
         
     def openS1(self):
         self.listA = self.userP
@@ -43,30 +45,32 @@ class openFile(object):
         print self.depart
         print self.listShotnum
     def openS6(self,dePart):
-        self.listFile = os.listdir("%s%s/scenes/"%(self.listShotnum,self.depart[dePart-1]))   
+        self.listFile = os.listdir("%s%s/scenes/"%(self.listShotnum,self.depart[dePart-1]))
+        self.anim = self.depart[dePart-1]    
         print self.listFile
         self.listPath = "%s%s/scenes/"%(self.listShotnum,self.depart[dePart-1])
         print self.listPath
     def openSc(self,num):
         mc.file("%s%s"%(self.listPath,self.listFile[num-1]),open=True)    
-    def saveCrr(self,numType):
+    def saveCrr(self):
         for x in range(len(self.listFile)):
             self.patt += re.findall("[A-Z]+[0-9]*[_]+[0-9]*[_]+[A-Za-z]*[_]+[master]*[.]+[v]",self.listFile[x])
             self.pattBl += re.findall("[A-Z]+[0-9]*[_]+[0-9]*[_]+[A-Za-z]*[_]+[block]*[.]+[v]",self.listFile[x])
             self.pattPol += re.findall("[A-Z]+[0-9]*[_]+[0-9]*[_]+[A-Za-z]*[_]+[polish]*[.]+[v]",self.listFile[x])
-        print len(self.patt)
-        print len(self.pattBl)
-        print len(self.pattPol)
-        self.blockVer = len(self.pattBl)
-        self.polVer = len(self.pattPol)
-        self.Version = len(self.patt)
-        if self.patt == 0:
+        self.blockVer = "%03d"%(len(self.pattBl)+1)
+        self.polVer = "%03d"%(len(self.pattPol)+1)
+        self.Version = "%03d"%(len(self.patt)+1)
+        if self.anim == "Animation":
+            numType = input("block/polish : 1/2\n")
             if numType == 1:
-                 print "%s%s00%s"%(self.listPath,self.pattBl[0],self.blockVer+1)    
+                 mc.file(rename="%s%s%s" %(self.listPath,self.pattBl[0],self.blockVer))
+                 mc.file(save=True,type="mayaAscii")    
             elif numType == 2:
-                 print "%s%s00%s"%(self.listPath,self.pattPol[0],self.polVer+1)           
-        elif self.patt !=0:
-             print "%s%s00%s"%(self.listPath,self.patt[0],self.Version+1)    
+                 mc.file(rename="%s%s%s" %(self.listPath,self.pattPol[0],self.polVer))
+                 mc.file(save=True,type="mayaAscii")           
+        elif len(self.patt) != 0:
+             mc.file(rename="%s%s%s"%(self.listPath,self.patt[0],self.Version))
+             mc.file(save=True,type="mayaAscii")        
         """self.countVer = re.findall("[A-Z]+[0-9]*[_]+[0-9]*[_]+[A-Za-z]*[_]+[a-z]*[.]+[v]+[0-9]*","".join(self.listFile))
         self.Version = "%03d"%(len(self.countVer)+1)
         print "%s___%s"%(self.countVer,self.Version)
@@ -79,5 +83,7 @@ x.openS2(1)
 x.openS3(2)
 x.openS4(1)
 x.openS5(1)
-x.openS6(2)
-x.saveCrr(1)
+x.openS6(1)
+x.openSc(1)
+print x.anim
+x.saveCrr()

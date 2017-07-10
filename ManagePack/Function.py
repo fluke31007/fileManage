@@ -6,7 +6,7 @@ import datetime
 import math
 class Function(object):
     def __init__(self):
-        self.userP ="C:/users/"+getpass.getuser()+"/Documents/yggintern/"
+        self.userP ="C:/Users/"+getpass.getuser()+"/Documents/yggintern/"
         self.workN=""
         self.proJ=""        
         self.typeW=""
@@ -35,31 +35,54 @@ class Function(object):
         print self.listA  
         
     def openS2(self,W):
-        self.listWork = self.listA + self.proJ[W-1]+"/"
+        self.listWork = self.listA+W+"/"
         self.typeW = os.listdir("%s"%(self.listWork))
         print self.typeW
-        print self.listWork  
+        print self.listWork
+        # sq/asset
+        for num in self.typeW : 
+            mc.menuItem('CateBox_%s'%(num),l=num,p='CateBox')
+        mc.optionMenu('CateBox',e=True,select=1)
+        mc.optionMenu('ProBox',e=True)
+        mc.textField('Path',e=True,tx='%s'%(self.listWork))
     def openS3(self,SqA):
-        self.listType = self.listWork + self.typeW[SqA-1]+"/"
+        self.listType = self.listWork+SqA+"/"
         self.workN = os.listdir("%s"%(self.listType))
         print self.workN
         print self.listType
+        # y01-02 or char rig
+        for num in self.workN :
+            mc.menuItem('SubBox_%s'%(num),l=num,p='SubBox') 
+            
+            mc.textField('Path',e=True,tx='%s'%(self.listType))
     def openS4(self,Part):
-        self.listPart = self.listType + self.workN[Part-1]+"/"
+        self.listPart = self.listType+Part+"/"
         self.shotN = os.listdir("%s"%(self.listPart))
         print self.shotN
         print self.listPart
+        # shot num or charracter
+        for num in self.shotN :
+            mc.menuItem('ShotBox_%s'%(num),l=num,p='ShotBox') 
+            
     def openS5(self,shotnum):
-        self.listShotnum = self.listPart + self.shotN[shotnum-1]+"/"
+        self.listShotnum = self.listPart+shotnum+"/"
         self.depart = os.listdir("%s"%(self.listShotnum))
         print self.depart
         print self.listShotnum
+        # department
+        for num in self.depart :
+            mc.menuItem('DepBox_%s'%(num),l=num,p='DepBox') 
+            
     def openS6(self,dePart):
-        self.listFile = os.listdir("%s%s/scenes/"%(self.listShotnum,self.depart[dePart-1]))
-        self.anim = self.depart[dePart-1]    
+        self.listFile = os.listdir("%s%s/scenes/"%(self.listShotnum,dePart))
+        self.anim = dePart
         print self.listFile
-        self.listPath = "%s%s/scenes/"%(self.listShotnum,self.depart[dePart-1])
+        self.listPath = "%s%s/scenes/"%(self.listShotnum,dePart)
         print self.listPath
+        mc.textScrollList('list',e=True,ra=True)
+        for d in self.listFile:
+            mc.textScrollList('list',e=True,a=d) 
+        
     def openSc(self,num):
         self.curFile = self.listFile[num-1]
         mc.file("%s%s"%(self.listPath,self.listFile[num-1]),open=True)    

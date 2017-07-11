@@ -18,7 +18,7 @@ class Gui(object):
     def __init__(self):
         self.window = "windowNN";
         self.title = "File Manager";
-    def delUI(self):
+    def delUI(self,*arg):
         mc.deleteUI('%s'%(self.window))
     def comLayout(self):
         if mc.window('%s'%(self.window),ex=True):
@@ -69,55 +69,49 @@ class Gui(object):
         mc.rowColumnLayout('row2_M',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text(l='')
         mc.text(l='')
-        
+        aa.saveA1()
         mc.rowColumnLayout('row2_0',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text('Proj',l ='Project')
         mc.text(l='                ')
-        mc.optionMenu('S_ProBox')
-        mc.menuItem('S_ProBox0',l='')
-        mc.menuItem('S_ProBox1',l='1')
-        mc.menuItem('S_ProBox2',l='2')
-        
-        
+        mc.optionMenu('S_ProBox',cc=aa.saveA2)
+        for x in aa.proJ :
+            mc.menuItem('S_ProBox_%s'%(x),l=x,p='S_ProBox')
         mc.rowColumnLayout('row2_1',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text('cate',l ='Categories')
         mc.text(l='         ')
-        mc.optionMenu('S_CateBox')
-        mc.menuItem('S_CateBox0',l='')
-        mc.menuItem('S_CateBox1',l='1')
-        mc.menuItem('S_CateBox2',l='2')
-        
+        mc.optionMenu('S_CateBox',cc=aa.saveA3)
+
         mc.rowColumnLayout('row2_2',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text('subCate',l ='Sub Categories')
         mc.text(l='     ')
-        mc.optionMenu('S_SubBox')
-        mc.menuItem('S_SubBox0',l='')
-        mc.menuItem('S_SubBox1',l='1')
-        mc.menuItem('S_SubBox2',l='2')
-        
+        mc.optionMenu('S_SubBox',cc=aa.saveA4)
+
         mc.rowColumnLayout('row2_3',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text('shots',l ='shot')
         mc.text(l='')
-        mc.optionMenu('S_ShotBox')
-        mc.menuItem('S_ShotBox0',l='')
-        mc.menuItem('S_ShotBox1',l='1')
-        mc.menuItem('S_ShotBox2',l='2')
-        
+        mc.optionMenu('S_ShotBox',cc=aa.saveA5)
+
         mc.rowColumnLayout('row2_4',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text('dePart',l ='Department')
         mc.text(l='')
-        mc.optionMenu('S_DepBox')
-        mc.menuItem('S_DepBox0',l='')
-        mc.menuItem('S_DepBox1',l='1')
-        mc.menuItem('S_DepBox2',l='2')
-        
+        mc.optionMenu('S_DepBox',cc=aa.saveA6)
+
         mc.rowColumnLayout('row2_5',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
         mc.text(l='Type Animation')
         mc.separator(st='none')
-        mc.optionMenu('S_TpeBox')
-        mc.menuItem('S_TpeBox0',l='')
-        mc.menuItem('S_TpeBox1',l='1')
-        mc.menuItem('S_TpeBox2',l='2')
+        mc.optionMenu('S_TypeBox',cc=aa.saveA7)
+        mc.menuItem('S_TypeBox0',l='block')
+        mc.menuItem('S_TypeBox1',l='polish')
+        mc.menuItem('S_TpeBox2',l='master')
+        mc.columnLayout('tab2col',p=self.channel2)
+        mc.text(l='',p='tab2col')
+        mc.text(l='',p='tab2col')
+        mc.text(l='',p='tab2col')
+        mc.rowColumnLayout('row2_6',nc=3,p=self.channel2,cw=[(1,5),(2,300),(3,100)])
+        mc.text(l='')
+        mc.text(l='')
+        mc.button('runsaveAs',l='Save As',c=aa.saveAsFile)
+        
         mc.tabLayout(self.tabs, edit=True,tabLabel=((self.channel1, 'Open'),(self.channel2, 'Save')),p=self.midPane )
         
         self.rightPane = mc.paneLayout('rightPane',cn='horizontal2',p=self.midPane)
@@ -129,22 +123,19 @@ class Gui(object):
         mc.separator(st='none')
         mc.rowColumnLayout('botRow1',nc=2,p=self.botcolumn,cw=[(1,90),(2,380),(3,10)])
         mc.text(l="Show Path")
-        mc.textField('Path',tx='%s'%(aa.listA))
+        mc.textField('Path',tx='Unititled')
         mc.separator(st='none')
         mc.rowColumnLayout('botRow2',nc=2,p=self.botcolumn,cw=[(1,120),(2,350),(3,10)])
         mc.text(l="Current Working Path")
-        mc.textField(tx='aa')
+        mc.textField('cw',tx='Unititled')
         mc.columnLayout('botRow3',p=self.botPane)
-        mc.button('runOpen',l='Open',w=150)
+        mc.button('runOpen',l='Open',w=150,c=aa.openSc)
         mc.text(l='')
-        mc.button('runsave',l='Save NewVersion',w=150)
-        mc.text(l='')
-        mc.button('runsaveAs',l='Save As',w=150)
-        mc.text(l='')
-        mc.button(l='Close',w=150)
+        mc.button('runsave',l='Save NewVersion',w=150,c=aa.saveCrr)
+        mc.text(l='')    
+        mc.button(l='Close',w=150,c=self.delUI)
         mc.showWindow(self.window)
+
 x = Gui()
 x.comLayout()
-x.rightPane
-#x.delUI()
-print aa.typeW
+

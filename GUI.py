@@ -52,7 +52,7 @@ class Gui(object):
         mc.optionMenu('SubBox',cc=aa.openS4)
 
         mc.rowColumnLayout('row1_3',nc=3,p=self.channel1,cw=[(1,100),(2,10),(3,100)])
-        mc.text('shots',l ='shot')
+        mc.text('shots',l ='Shot')
         mc.text(l='')
         mc.optionMenu('ShotBox',cc=aa.openS5)
 
@@ -87,7 +87,7 @@ class Gui(object):
         mc.optionMenu('S_SubBox',cc=aa.saveA4)
 
         mc.rowColumnLayout('row2_3',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
-        mc.text('shots',l ='shot')
+        mc.text('shots',l ='Shot')
         mc.text(l='')
         mc.optionMenu('S_ShotBox',cc=aa.saveA5)
 
@@ -97,7 +97,7 @@ class Gui(object):
         mc.optionMenu('S_DepBox',cc=aa.saveA6)
 
         mc.rowColumnLayout('row2_5',nc=3,p=self.channel2,cw=[(1,100),(2,10),(3,100)])
-        mc.text(l='Type Animation')
+        mc.text(l='Type Of Task')
         mc.separator(st='none')
         mc.optionMenu('S_TypeBox',cc=aa.saveA7)
         mc.menuItem('S_TypeBox0',l='block')
@@ -112,7 +112,7 @@ class Gui(object):
         mc.text(l='')
         mc.button('runsaveAs',l='Save As',c=aa.saveAsFile)
         
-        mc.tabLayout(self.tabs, edit=True,tabLabel=((self.channel1, 'Open'),(self.channel2, 'Save')),p=self.midPane )
+        mc.tabLayout(self.tabs, edit=True,tabLabel=((self.channel1, 'Open'),(self.channel2, 'Save As')),p=self.midPane )
         
         self.rightPane = mc.paneLayout('rightPane',cn='horizontal2',p=self.midPane)
         mc.textScrollList('list',p=self.rightPane)
@@ -138,4 +138,4 @@ class Gui(object):
 
 x = Gui()
 x.comLayout()
-
+print aa.S_DepBox
